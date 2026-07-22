@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#781f24">
+  <meta name="description" content="敲一下木鱼，功德加一，放空一会儿。">
+  <title>敲木鱼 · 功德 +1</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .game-shell.pulse-4{animation:page-pulse .36s ease-out}.game-shell.pulse-5{animation:page-pulse-strong .48s ease-out}
+    @keyframes page-pulse{50%{background:#85282c}}@keyframes page-pulse-strong{35%{background:#913135;box-shadow:inset 0 0 110px rgba(255,218,133,.13)}}
+    @media (prefers-reduced-motion:reduce){.game-shell.pulse-4,.game-shell.pulse-5{animation:none}}
+  </style>
+</head>
+<body>
+  <main class="game-shell" id="gameShell">
+    <div class="paper-noise" aria-hidden="true"></div>
+    <header class="top-bar">
+      <div class="score-board" aria-live="polite" aria-atomic="true">
+        <span class="score-label">本次功德</span>
+        <strong class="score-number" id="score">0</strong>
+      </div>
+      <button class="sound-toggle" id="soundToggle" type="button" aria-label="关闭敲击声音" aria-pressed="false">
+        <span class="sound-icon" id="soundIcon" aria-hidden="true">声</span><span id="soundText">有声音</span>
+      </button>
+    </header>
+
+    <section class="game-stage" aria-label="敲木鱼游戏区域">
+      <div class="combo-readout" id="comboReadout"><span>连击</span><strong id="combo">× 0</strong></div>
+      <div class="woodfish-scene">
+        <div class="halo halo-back" aria-hidden="true"></div><div class="halo halo-front" aria-hidden="true"></div>
+        <button class="woodfish-button" id="woodfish" type="button" aria-label="敲一下木鱼，当前功德 0">
+          <span class="woodfish-visual" id="woodfishVisual">
+            <span class="woodfish-foot"></span>
+            <span class="woodfish-body"><span class="woodfish-highlight"></span><span class="woodfish-mouth"></span><span class="woodfish-groove groove-one"></span><span class="woodfish-groove groove-two"></span><span class="woodfish-groove groove-three"></span><span class="woodfish-mark">功</span></span>
+            <span class="woodfish-shadow"></span>
+          </span>
+        </button>
+        <div class="effects-layer" id="effects" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <footer class="game-footer"><span class="footer-line" aria-hidden="true"></span><p>轻点木鱼，放空一会儿</p><span class="footer-line" aria-hidden="true"></span></footer>
+    <div class="mallet-cursor" id="mallet" data-visible="false" aria-hidden="true"><span class="mallet-head"></span><span class="mallet-handle"></span><span class="mallet-knot"></span></div>
+  </main>
+  <script src="./game.js"></script>
+</body>
+</html>

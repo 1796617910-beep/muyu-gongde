@@ -353,9 +353,12 @@ canvas {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: rgba(23, 17, 31, 0.7);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(23, 17, 31, 0.3), rgba(23, 17, 31, 0.58) 68%),
+    rgba(23, 17, 31, 0.18);
+  pointer-events: none;
   text-align: center;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(2px);
 }
 
 .game-overlay > span {
@@ -390,6 +393,20 @@ canvas {
   color: var(--night);
   font-size: 12px;
   font-weight: 750;
+  pointer-events: auto;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.game-overlay button:hover,
+.game-overlay button:focus-visible {
+  box-shadow: 0 12px 34px rgba(201, 245, 106, 0.27);
+  outline: 2px solid rgba(255, 244, 216, 0.76);
+  outline-offset: 3px;
+  transform: translateY(-1px);
+}
+
+.game-overlay button:active {
+  transform: scale(0.96);
 }
 
 .swipe-hint {

@@ -76,7 +76,8 @@
     overlayEyebrow.textContent = copy[0];
     overlayTitle.textContent = copy[1];
     overlayHint.textContent = copy[2];
-    overlayButton.hidden = status !== "over";
+    overlayButton.textContent =
+      status === "ready" ? "开始游戏" : status === "paused" ? "继续游戏" : "再来一局";
   }
 
   function makeFood() {
@@ -411,7 +412,11 @@
     button.addEventListener("click", () => setDirection(button.dataset.direction));
   });
   document.getElementById("restartButton").addEventListener("click", restart);
-  overlayButton.addEventListener("click", restart);
+  overlayButton.addEventListener("click", () => {
+    if (status === "ready") start();
+    else if (status === "paused") togglePause();
+    else restart();
+  });
   pauseButton.addEventListener("click", togglePause);
   soundButton.addEventListener("click", () => {
     muted = !muted;

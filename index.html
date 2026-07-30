@@ -2,47 +2,71 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="theme-color" content="#781f24">
-  <meta name="description" content="敲一下木鱼，功德加一，放空一会儿。">
-  <title>静静专属</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17111f">
+  <meta name="description" content="一局刚刚好的贪吃蛇。支持键盘、WASD、手机滑动和方向按钮。">
+  <meta property="og:title" content="静静专属 · 贪吃蛇">
+  <meta property="og:description" content="越吃越长，别撞到自己。打开网页就能玩。">
+  <meta property="og:image" content="https://1796617910-beep.github.io/muyu-gongde/og.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>静静专属 · 贪吃蛇</title>
   <link rel="stylesheet" href="./style.css">
-  <style>
-    .game-shell.pulse-4{animation:page-pulse .36s ease-out}.game-shell.pulse-5{animation:page-pulse-strong .48s ease-out}
-    @keyframes page-pulse{50%{background:#85282c}}@keyframes page-pulse-strong{35%{background:#913135;box-shadow:inset 0 0 110px rgba(255,218,133,.13)}}
-    @media (prefers-reduced-motion:reduce){.game-shell.pulse-4,.game-shell.pulse-5{animation:none}}
-  </style>
 </head>
 <body>
-  <main class="game-shell" id="gameShell">
-    <div class="paper-noise" aria-hidden="true"></div>
-    <header class="top-bar">
-      <div class="score-board" aria-live="polite" aria-atomic="true">
-        <span class="score-label">本次功德</span>
-        <strong class="score-number" id="score">0</strong>
-      </div>
-      <button class="sound-toggle" id="soundToggle" type="button" aria-label="关闭敲击声音" aria-pressed="false">
-        <span class="sound-icon" id="soundIcon" aria-hidden="true">声</span><span id="soundText">有声音</span>
-      </button>
-    </header>
+  <main class="snake-shell">
+    <div class="orb orb-one" aria-hidden="true"></div>
+    <div class="orb orb-two" aria-hidden="true"></div>
+    <div class="app-frame">
+      <section class="intro-panel" aria-labelledby="game-title">
+        <div class="brand-row"><span class="brand-dot" aria-hidden="true">S</span><span>静静专属</span></div>
+        <p class="kicker">CLASSIC GAME · 新鲜开吃</p>
+        <h1 id="game-title">越吃越长，<br><em>别撞到自己。</em></h1>
+        <p class="intro-copy">一局刚刚好。吃下果实，绕开边界，让这条小蛇长得再长一点。</p>
+        <div class="stats" aria-label="游戏数据">
+          <div class="stat-card score-card"><span>本局分数</span><strong id="score">00</strong></div>
+          <div class="stat-card"><span>最高纪录</span><strong id="best">00</strong></div>
+          <div class="stat-card"><span>当前等级</span><strong id="level">01</strong></div>
+        </div>
+        <div class="desktop-hints" aria-label="操作说明">
+          <span><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd>方向</span>
+          <span><kbd>Space</kbd>暂停</span>
+        </div>
+      </section>
 
-    <section class="game-stage" aria-label="敲木鱼游戏区域">
-      <div class="combo-readout" id="comboReadout"><span>连击</span><strong id="combo">× 0</strong></div>
-      <div class="woodfish-scene">
-        <div class="halo halo-back" aria-hidden="true"></div><div class="halo halo-front" aria-hidden="true"></div>
-        <button class="woodfish-button" id="woodfish" type="button" aria-label="敲一下木鱼，当前功德 0">
-          <span class="woodfish-visual" id="woodfishVisual">
-            <span class="woodfish-foot"></span>
-            <span class="woodfish-body"><span class="woodfish-highlight"></span><span class="woodfish-mouth"></span><span class="woodfish-groove groove-one"></span><span class="woodfish-groove groove-two"></span><span class="woodfish-groove groove-three"></span><span class="woodfish-mark">静</span></span>
-            <span class="woodfish-shadow"></span>
-          </span>
-        </button>
-        <div class="effects-layer" id="effects" aria-hidden="true"></div>
-      </div>
-    </section>
+      <section class="game-column" aria-label="贪吃蛇游戏区">
+        <div class="game-toolbar">
+          <div class="live-badge"><span aria-hidden="true"></span><b id="liveText">等待开始</b></div>
+          <div class="toolbar-actions">
+            <button type="button" class="icon-button" id="soundButton" aria-label="关闭音效" aria-pressed="false">声</button>
+            <button type="button" class="text-button" id="restartButton">重新开始</button>
+          </div>
+        </div>
 
-    <footer class="game-footer"><span class="footer-line" aria-hidden="true"></span><p>轻点木鱼，放空一会儿</p><span class="footer-line" aria-hidden="true"></span></footer>
-    <div class="mallet-cursor" id="mallet" data-visible="false" aria-hidden="true"><span class="mallet-head"></span><span class="mallet-handle"></span><span class="mallet-knot"></span></div>
+        <div class="board-card">
+          <div class="corner-label top-left" id="levelLabel">LEVEL 01</div>
+          <div class="corner-label top-right">22 × 22</div>
+          <div class="board-wrap" id="boardWrap">
+            <canvas id="gameCanvas" role="img" aria-label="贪吃蛇棋盘，当前分数 0"></canvas>
+            <div class="game-overlay" id="overlay" role="status">
+              <span id="overlayEyebrow">READY?</span>
+              <strong id="overlayTitle">准备好了吗？</strong>
+              <p id="overlayHint">按方向键或滑动开始</p>
+              <button type="button" id="overlayButton" hidden>再来一局</button>
+            </div>
+          </div>
+          <p class="swipe-hint">手机直接在棋盘上滑动</p>
+        </div>
+
+        <div class="mobile-controls" aria-label="方向控制">
+          <button type="button" class="control-up" data-direction="up" aria-label="向上">↑</button>
+          <button type="button" data-direction="left" aria-label="向左">←</button>
+          <button type="button" class="pause-control" id="pauseButton" aria-label="暂停游戏">Ⅱ</button>
+          <button type="button" data-direction="right" aria-label="向右">→</button>
+          <button type="button" class="control-down" data-direction="down" aria-label="向下">↓</button>
+        </div>
+      </section>
+    </div>
   </main>
   <script src="./game.js"></script>
 </body>

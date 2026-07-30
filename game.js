@@ -28,6 +28,8 @@
   const overlayTitle = document.getElementById("overlayTitle");
   const overlayHint = document.getElementById("overlayHint");
   const overlayButton = document.getElementById("overlayButton");
+  const milestoneEffect = document.getElementById("milestoneEffect");
+  const milestoneCount = document.getElementById("milestoneCount");
   const soundButton = document.getElementById("soundButton");
   const pauseButton = document.getElementById("pauseButton");
 
@@ -39,6 +41,7 @@
   let best = Number(localStorage.getItem("snake-best")) || 0;
   let status = "ready";
   let timer = 0;
+  let milestoneTimer = 0;
   let animation = 0;
   let muted = false;
   let audioContext = null;
@@ -95,6 +98,20 @@
       }
     }
     return open[Math.floor(Math.random() * open.length)] || { x: 4, y: 4 };
+  }
+
+  function celebrateMilestone(value) {
+    if (value % 10 !== 0) return;
+    clearTimeout(milestoneTimer);
+    milestoneCount.textContent = String(value);
+    milestoneEffect.hidden = false;
+    milestoneEffect.classList.remove("is-active");
+    void milestoneEffect.offsetWidth;
+    milestoneEffect.classList.add("is-active");
+    milestoneTimer = setTimeout(() => {
+      milestoneEffect.hidden = true;
+      milestoneEffect.classList.remove("is-active");
+    }, 1700);
   }
 
   function draw() {
@@ -301,23 +318,31 @@
     const ate = nextHead.x === food.x && nextHead.y === food.y;
     if (ate) {
       score += 1;
+      const isMilestone = score % 10 === 0;
+      const particleCount = isMilestone ? 28 : 12;
+      const milestoneColors = ["#c9f56a", "#75e6b4", "#fff4d8", "#ff6b5f"];
       best = Math.max(best, score);
       localStorage.setItem("snake-best", String(best));
       snake = nextSnake;
       food = makeFood();
-      particles = Array.from({ length: 12 }, (_, index) => {
-        const angle = (Math.PI * 2 * index) / 12;
+      particles = Array.from({ length: particleCount }, (_, index) => {
+        const angle = (Math.PI * 2 * index) / particleCount;
         return {
           x: nextHead.x,
           y: nextHead.y,
-          dx: Math.cos(angle) * (0.045 + (index % 3) * 0.009),
-          dy: Math.sin(angle) * (0.045 + (index % 3) * 0.009),
+          dx: Math.cos(angle) * (0.045 + (index % 4) * (isMilestone ? 0.016 : 0.009)),
+          dy: Math.sin(angle) * (0.045 + (index % 4) * (isMilestone ? 0.016 : 0.009)),
           life: 1,
-          size: 2.5 + (index % 3),
-          color: index % 2 ? "#ff6b5f" : "#fff4d8",
+          size: (isMilestone ? 3 : 2.5) + (index % 3),
+          color: isMilestone
+            ? milestoneColors[index % milestoneColors.length]
+            : index % 2
+              ? "#ff6b5f"
+              : "#fff4d8",
         };
       });
       playTone("eat");
+      celebrateMilestone(score);
       animateParticles();
     } else {
       nextSnake.pop();
@@ -343,12 +368,15 @@
 
   function restart() {
     clearTimeout(timer);
+    clearTimeout(milestoneTimer);
     snake = START_SNAKE.map((part) => ({ ...part }));
     food = { x: 16, y: 11 };
     direction = "right";
     queuedDirection = "right";
     score = 0;
     particles = [];
+    milestoneEffect.hidden = true;
+    milestoneEffect.classList.remove("is-active");
     status = "ready";
     updateUi();
     draw();

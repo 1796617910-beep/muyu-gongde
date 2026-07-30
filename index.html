@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <title>静静专属 · 贪吃蛇</title>
-  <link rel="stylesheet" href="./style.css?v=20260730-4">
+  <link rel="stylesheet" href="./style.css?v=20260730-5">
 </head>
 <body>
   <main class="snake-shell">
@@ -48,6 +48,17 @@
           <div class="corner-label top-right">22 × 22</div>
           <div class="board-wrap" id="boardWrap">
             <canvas id="gameCanvas" role="img" aria-label="贪吃蛇棋盘，当前分数 0"></canvas>
+            <div class="milestone-effect" id="milestoneEffect" role="status" aria-live="polite" hidden>
+              <div class="milestone-burst" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="milestone-message">
+                <span>小蛇好棒</span>
+                <strong id="milestoneCount">10</strong>
+                <em>颗果实达成！</em>
+              </div>
+            </div>
             <div class="game-overlay" id="overlay" role="status">
               <span id="overlayEyebrow">READY?</span>
               <strong id="overlayTitle">准备好了吗？</strong>
@@ -68,6 +79,6 @@
       </section>
     </div>
   </main>
-  <script src="./game.js?v=20260730-4"></script>
+  <script src="./game.js?v=20260730-5"></script>
 </body>
 </html>

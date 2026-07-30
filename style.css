@@ -361,6 +361,10 @@ canvas {
   backdrop-filter: blur(2px);
 }
 
+.game-overlay[hidden] {
+  display: none;
+}
+
 .game-overlay > span {
   margin-bottom: 12px;
   color: var(--mint);

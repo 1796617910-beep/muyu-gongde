@@ -361,8 +361,10 @@ canvas {
   backdrop-filter: blur(2px);
 }
 
-.game-overlay[hidden] {
-  display: none;
+.game-overlay[hidden],
+.game-overlay[aria-hidden="true"] {
+  display: none !important;
+  backdrop-filter: none !important;
 }
 
 .game-overlay > span {

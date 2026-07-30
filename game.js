@@ -64,10 +64,16 @@
 
     if (status === "running") {
       overlay.hidden = true;
+      overlay.setAttribute("aria-hidden", "true");
+      overlay.style.setProperty("display", "none", "important");
+      overlay.style.setProperty("backdrop-filter", "none", "important");
       return;
     }
 
     overlay.hidden = false;
+    overlay.removeAttribute("aria-hidden");
+    overlay.style.removeProperty("display");
+    overlay.style.removeProperty("backdrop-filter");
     const copy = {
       ready: ["READY?", "准备好了吗？", "按方向键或滑动开始"],
       paused: ["PAUSED", "歇一会儿", "按空格或下方按钮继续"],
